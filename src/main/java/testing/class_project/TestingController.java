@@ -49,6 +49,7 @@ public class TestingController {
     }
 
     // 2. Lista de Administradores
+    // Endpoint modificado para administradores (ahora ejecuta query de calles)
     @GetMapping("/administradores")
     public ResponseEntity<List<Map<String, Object>>> getAdministradores() {
         if (!accessControlService.canExecuteQuery2()) {
@@ -56,7 +57,7 @@ public class TestingController {
         }
 
         try {
-            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query2"));
+            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query-calles")); // Usa QUERY_CALLES
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -138,20 +139,20 @@ public class TestingController {
         }
     }
 
-   // Añade este método (estructura idéntica a tus otros endpoints)
-@GetMapping("/calles-distintas")
-public ResponseEntity<List<Map<String, Object>>> getCallesDistintas() {
-    if (!accessControlService.canExecuteQuery11()) {
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-    }
+    // Endpoint modificado para calles-distintas (ahora ejecuta query de administradores)
+    @GetMapping("/calles-distintas")
+    public ResponseEntity<List<Map<String, Object>>> getCallesDistintas() {
+        if (!accessControlService.canExecuteQuery11()) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
 
-    try {
-        var results = jdbcTemplate.queryForList(queryRepository.getQuery("query-calles"));
-        return new ResponseEntity<>(results, HttpStatus.OK);
-    } catch (DataAccessException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        try {
+            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query2")); // Usa QUERY_2 (administradores)
+            return new ResponseEntity<>(results, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-}
 
     // 8. Cantidad de vecinos de X calle (modificado para usar LIKE con %)
     @GetMapping("/vecinos/calle")

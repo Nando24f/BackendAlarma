@@ -22,6 +22,7 @@ public class AccessControlService {
 
     /**
      * Checks if current client can execute query1
+     *
      * @return true if client IP is mapped to credentials authorized for query1
      */
     public boolean canExecuteQuery1() {
@@ -29,7 +30,7 @@ public class AccessControlService {
     }
 
     public boolean canExecuteQuery2() {
-        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_2);
+        return canExecuteQuery(IpConfig.JUAN, "query-calles"); // Ahora verifica query-calles
     }
 
     public boolean canExecuteQuery3() {
@@ -51,7 +52,7 @@ public class AccessControlService {
     public boolean canExecuteQuery7() {
         return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_7);
     }
-    
+
     public boolean canExecuteQuery8() {
         return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_8);
     }
@@ -59,18 +60,20 @@ public class AccessControlService {
     public boolean canExecuteQuery9() {
         return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_9);
     }
-	
+
     public boolean canExecuteQuery10() {
         return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_10);
     }
+
     public boolean canExecuteQuery11() {
-    return canExecuteQuery(IpConfig.JUAN, "query-calles"); // Cambiado a nuevo ID
-}
+        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_2); // Ahora verifica query2
+    }
+
     public boolean canExecuteQuery(String allowedUser, String requiredQuery) {
         var userData = ipConfig.getCredentialsForIp(request.getRemoteAddr());
         var userName = userData.name();
         var userQueries = userData.queries();
-	System.out.println("Remote IP: " + request.getRemoteAddr());
+        System.out.println("Remote IP: " + request.getRemoteAddr());
         return userName.equals(allowedUser) && userQueries.contains(requiredQuery);
     }
 }

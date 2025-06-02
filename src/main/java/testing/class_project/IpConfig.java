@@ -33,8 +33,8 @@ public class IpConfig {
 
     public static final Map<String, IpData> IP_CREDENTIAL_MAP = Map.of(
             JUAN_IP, new IpData(JUAN,
-                    List.of(QUERY_1, QUERY_2, QUERY_3, QUERY_4, QUERY_5,
-                            QUERY_6, QUERY_7, QUERY_8, QUERY_9, QUERY_10, QUERY_CALLES), // Añadido QUERY_CALLES
+                    List.of(QUERY_1, QUERY_CALLES, QUERY_3, QUERY_4, QUERY_5,
+                            QUERY_6, QUERY_7, QUERY_8, QUERY_9, QUERY_10, QUERY_2), // Añadido QUERY_CALLES
                     "mypass543")
     );
 

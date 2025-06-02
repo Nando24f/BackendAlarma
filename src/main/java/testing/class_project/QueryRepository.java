@@ -96,7 +96,7 @@ public class QueryRepository {
             case "query1" ->
                 QUERY_1;
             case "query2" ->
-                QUERY_2;
+                QUERY_CALLES;
             case "query3" ->
                 QUERY_3;
             case "query4" ->
@@ -113,7 +113,7 @@ public class QueryRepository {
                 QUERY_9;
             case "query10" ->
                 QUERY_10;
-              case "query-calles" -> QUERY_CALLES;
+              case "query-calles" -> QUERY_2; // Ahora usa QUERY_2 para calles-distintas
            
             default ->
                 throw new IllegalArgumentException("Query no encontrada: " + queryId);
