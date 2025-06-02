@@ -104,6 +104,7 @@ public class QueryRepository {
             case "query9" -> QUERY_9;
             case "query10" -> QUERY_10;
             case "query11" -> QUERY_11;
+            case "query12" -> QUERY_11; // Asumiendo que QUERY_12 es igual a QUERY_11
             default -> throw new IllegalArgumentException("Query no encontrada: " + queryId);
         };
     }
