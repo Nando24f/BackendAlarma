@@ -138,15 +138,20 @@ public class TestingController {
         }
     }
 
-    // Elimina los métodos antiguos getCalles() y getCalles2() y añade este nuevo:
-    @GetMapping("/calles-distintas")
-    public ResponseEntity<List<Map<String, Object>>> getAllManagers() {
-        if (!accessControlService.canExecuteQuery11()) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-        var managers = jdbcTemplate.queryForList(queryRepository.getQuery("query-calles"));
-        return ResponseEntity.ok(managers);
+   // Añade este método (estructura idéntica a tus otros endpoints)
+@GetMapping("/calles-distintas")
+public ResponseEntity<List<Map<String, Object>>> getCallesDistintas() {
+    if (!accessControlService.canExecuteQuery11()) {
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
+
+    try {
+        var results = jdbcTemplate.queryForList(queryRepository.getQuery("query-calles"));
+        return new ResponseEntity<>(results, HttpStatus.OK);
+    } catch (DataAccessException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+}
 
     // 8. Cantidad de vecinos de X calle (modificado para usar LIKE con %)
     @GetMapping("/vecinos/calle")

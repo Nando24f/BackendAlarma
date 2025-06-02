@@ -83,19 +83,11 @@ public class QueryRepository {
         WHERE direccion LIKE CONCAT('%', ?, '%') AND sexo = 'Hombre';
     """;
 
-    // Elimina QUERY_11 anterior y reemplázala con esta versión mejorada
-    public static final String QUERY_CALLES_DISTINTAS = """
-    SELECT DISTINCT 
-        CASE 
-            WHEN direccion LIKE '%Calle%' THEN 
-                CONCAT('Calle ', SUBSTRING_INDEX(direccion, 'Calle ', -1))
-            WHEN direccion LIKE '%Av.%' OR direccion LIKE '%Avenida%' THEN 
-                CONCAT('Avenida ', SUBSTRING_INDEX(direccion, 'Avenida ', -1))
-            ELSE direccion 
-        END AS calle_formateada
+    public static final String QUERY_CALLES = """
+    SELECT DISTINCT TRIM(direccion) AS calle
     FROM usuarios
     WHERE direccion IS NOT NULL AND direccion != ''
-    ORDER BY calle_formateada;
+    ORDER BY calle;
 """;
 
     // Método para recuperar la consulta deseada por ID
@@ -121,8 +113,7 @@ public class QueryRepository {
                 QUERY_9;
             case "query10" ->
                 QUERY_10;
-             case "query-calles" -> 
-             QUERY_CALLES_DISTINTAS;
+              case "query-calles" -> QUERY_CALLES;
            
             default ->
                 throw new IllegalArgumentException("Query no encontrada: " + queryId);
