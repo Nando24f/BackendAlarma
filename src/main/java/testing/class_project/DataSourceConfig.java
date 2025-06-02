@@ -15,12 +15,10 @@ import jakarta.servlet.http.HttpServletRequest;
 /**
  * Centralized configuration for multiple IP-based DataSources.
  * <p>
- * Main responsibilities:
- * 1. Creates a routing DataSource that selects connections based on client IP
- * 2. Manages connection pools for each database user
- * 3. Provides secure credentials through IP-based routing
+ * Main responsibilities: 1. Creates a routing DataSource that selects
+ * connections based on client IP 2. Manages connection pools for each database
+ * user 3. Provides secure credentials through IP-based routing
  */
-
 @Configuration
 public class DataSourceConfig {
 
@@ -34,7 +32,6 @@ public class DataSourceConfig {
      * Creates routing DataSource that selects connection based on client IP.
      * Uses separate connection pool for each database user.
      */
-
     @Bean
     public DataSource dataSource() {
         var targetDataSources = buildAllDataSources();
@@ -71,7 +68,7 @@ public class DataSourceConfig {
 
     private DataSource createDataSource(String username, String password) {
         var dataSource = new org.apache.tomcat.jdbc.pool.DataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/AlarmaVecinal");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/AlarmaVecinal?useSSL=false&serverTimezone=UTC");
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUsername(username);
         dataSource.setPassword(password);
