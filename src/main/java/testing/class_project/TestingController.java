@@ -26,8 +26,8 @@ public class TestingController {
     private final QueryRepository queryRepository;
 
     public TestingController(JdbcTemplate jdbcTemplate,
-                           AccessControlService accessControlService,
-                           QueryRepository queryRepository) {
+            AccessControlService accessControlService,
+            QueryRepository queryRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.accessControlService = accessControlService;
         this.queryRepository = queryRepository;
@@ -147,8 +147,8 @@ public class TestingController {
 
         try {
             var results = jdbcTemplate.queryForList(
-                queryRepository.getQuery("query8"), 
-                "%" + calle + "%"
+                    queryRepository.getQuery("query8"),
+                    "%" + calle + "%"
             );
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
@@ -165,8 +165,8 @@ public class TestingController {
 
         try {
             var results = jdbcTemplate.queryForList(
-                queryRepository.getQuery("query9"), 
-                "%" + calle + "%"
+                    queryRepository.getQuery("query9"),
+                    "%" + calle + "%"
             );
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
@@ -180,11 +180,11 @@ public class TestingController {
         if (!accessControlService.canExecuteQuery10()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-    
+
         try {
             var results = jdbcTemplate.queryForList(
-                queryRepository.getQuery("query10"), 
-                "%" + calle + "%"
+                    queryRepository.getQuery("query10"),
+                    "%" + calle + "%"
             );
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
@@ -192,7 +192,7 @@ public class TestingController {
         }
     }
 
-     @GetMapping("/calles")
+    @GetMapping("/calles")
     public ResponseEntity<List<Map<String, Object>>> getCalles() {
         if (!accessControlService.canExecuteQuery11()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -204,6 +204,5 @@ public class TestingController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 
 }
