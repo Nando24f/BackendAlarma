@@ -50,10 +50,9 @@ public class QueryRepository {
 
     // Total de hombres registrados
     public static final String QUERY_6 = """
-        SELECT DISTINCT TRIM(direccion) AS calle
-    FROM usuarios
-    WHERE direccion IS NOT NULL AND direccion != ''
-    ORDER BY calle;
+        SELECT COUNT(*) AS cantidad_hombres
+        FROM usuarios
+        WHERE sexo = 'Hombre';
     """;
 
     // Total de mujeres registradas
@@ -84,7 +83,19 @@ public class QueryRepository {
         WHERE direccion LIKE CONCAT('%', ?, '%') AND sexo = 'Hombre';
     """;
 
-  
+    public static final String QUERY_CALLES = """
+    SELECT DISTINCT TRIM(direccion) AS calle
+    FROM usuarios
+    WHERE direccion IS NOT NULL AND direccion != ''
+    ORDER BY calle;
+""";
+
+    public static final String QUERY_SEXOS = """
+    SELECT DISTINCT sexo
+    FROM usuarios
+    WHERE sexo IS NOT NULL AND sexo != ''
+    ORDER BY sexo;
+""";
 
     // Método para recuperar la consulta deseada por ID
     public String getQuery(String queryId) {
@@ -92,7 +103,7 @@ public class QueryRepository {
             case "query1" ->
                 QUERY_1;
             case "query2" ->
-                QUERY_2;
+                QUERY_CALLES;
             case "query3" ->
                 QUERY_3;
             case "query4" ->
@@ -109,6 +120,10 @@ public class QueryRepository {
                 QUERY_9;
             case "query10" ->
                 QUERY_10;
+              case "query-calles" -> 
+              QUERY_2; // Ahora usa QUERY_2 para calles-distintas
+            case "query-sexos" -> 
+                QUERY_SEXOS; // Nueva consulta
 
             default ->
                 throw new IllegalArgumentException("Query no encontrada: " + queryId);

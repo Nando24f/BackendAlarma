@@ -26,8 +26,8 @@ public class TestingController {
     private final QueryRepository queryRepository;
 
     public TestingController(JdbcTemplate jdbcTemplate,
-            AccessControlService accessControlService,
-            QueryRepository queryRepository) {
+                           AccessControlService accessControlService,
+                           QueryRepository queryRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.accessControlService = accessControlService;
         this.queryRepository = queryRepository;
@@ -93,6 +93,20 @@ public class TestingController {
         }
     }
 
+    // 5. Porcentaje de mujeres que generaron alarmas
+    @GetMapping("/alarmas/mujeres/porcentaje")
+    public ResponseEntity<List<Map<String, Object>>> getPorcentajeMujeresAlarmas() {
+        if (!accessControlService.canExecuteQuery5()) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        try {
+            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query5"));
+            return new ResponseEntity<>(results, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
     // 6. Cantidad de Hombres registrados
     @GetMapping("/usuarios/hombres/cantidad")
@@ -124,16 +138,6 @@ public class TestingController {
         }
     }
 
-    // Elimina los métodos antiguos getCalles() y getCalles2() y añade este nuevo:
-    @GetMapping("/query6")
-    public ResponseEntity<List<Map<String, Object>>> getAllManagers() {
-        if (!accessControlService.canExecuteQuery6()) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-        var managers = jdbcTemplate.queryForList(queryRepository.getQuery("query6"));
-        return ResponseEntity.ok(managers);
-    }
-
     // 8. Cantidad de vecinos de X calle (modificado para usar LIKE con %)
     @GetMapping("/vecinos/calle")
     public ResponseEntity<List<Map<String, Object>>> getVecinosPorCalle(@RequestParam String calle) {
@@ -143,8 +147,8 @@ public class TestingController {
 
         try {
             var results = jdbcTemplate.queryForList(
-                    queryRepository.getQuery("query8"),
-                    "%" + calle + "%"
+                queryRepository.getQuery("query8"), 
+                "%" + calle + "%"
             );
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
@@ -161,8 +165,8 @@ public class TestingController {
 
         try {
             var results = jdbcTemplate.queryForList(
-                    queryRepository.getQuery("query9"),
-                    "%" + calle + "%"
+                queryRepository.getQuery("query9"), 
+                "%" + calle + "%"
             );
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
@@ -176,17 +180,30 @@ public class TestingController {
         if (!accessControlService.canExecuteQuery10()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-
+    
         try {
             var results = jdbcTemplate.queryForList(
-                    queryRepository.getQuery("query10"),
-                    "%" + calle + "%"
+                queryRepository.getQuery("query10"), 
+                "%" + calle + "%"
             );
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    // Endpoint para obtener todos los sexos distintos
+
+     @GetMapping("/calles")
+    public ResponseEntity<List<Map<String, Object>>> getCalles() {
+        if (!accessControlService.canExecuteQuery11()) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        try {
+            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query-calles"));
+            return new ResponseEntity<>(results, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
 }
