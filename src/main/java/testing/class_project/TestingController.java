@@ -49,7 +49,6 @@ public class TestingController {
     }
 
     // 2. Lista de Administradores
-    // Endpoint modificado para administradores (ahora ejecuta query de calles)
     @GetMapping("/administradores")
     public ResponseEntity<List<Map<String, Object>>> getAdministradores() {
         if (!accessControlService.canExecuteQuery2()) {
@@ -57,7 +56,7 @@ public class TestingController {
         }
 
         try {
-            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query-calles")); // Usa QUERY_CALLES
+            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query2"));
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -139,19 +138,14 @@ public class TestingController {
         }
     }
 
-    // Endpoint modificado para calles-distintas (ahora ejecuta query de administradores)
+    // Elimina los métodos antiguos getCalles() y getCalles2() y añade este nuevo:
     @GetMapping("/calles-distintas")
-    public ResponseEntity<List<Map<String, Object>>> getCallesDistintas() {
+    public ResponseEntity<List<Map<String, Object>>> getAllManagers() {
         if (!accessControlService.canExecuteQuery11()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-
-        try {
-            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query2")); // Usa QUERY_2 (administradores)
-            return new ResponseEntity<>(results, HttpStatus.OK);
-        } catch (DataAccessException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        var managers = jdbcTemplate.queryForList(queryRepository.getQuery("query-calles"));
+        return ResponseEntity.ok(managers);
     }
 
     // 8. Cantidad de vecinos de X calle (modificado para usar LIKE con %)
@@ -202,6 +196,21 @@ public class TestingController {
                     queryRepository.getQuery("query10"),
                     "%" + calle + "%"
             );
+            return new ResponseEntity<>(results, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    // Endpoint para obtener todos los sexos distintos
+
+    @GetMapping("/usuarios/sexos")
+    public ResponseEntity<List<Map<String, Object>>> getSexosDistintos() {
+        if (!accessControlService.canExecuteQuerySexos()) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        try {
+            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query-sexos"));
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

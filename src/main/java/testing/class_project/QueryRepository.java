@@ -90,6 +90,14 @@ public class QueryRepository {
     ORDER BY calle;
 """;
 
+    // Sexos distintos en la base de datos
+    public static final String QUERY_SEXOS = """
+    SELECT DISTINCT sexo
+    FROM usuarios
+    WHERE sexo IS NOT NULL AND sexo != ''
+    ORDER BY sexo;
+""";
+
     // Método para recuperar la consulta deseada por ID
     public String getQuery(String queryId) {
         return switch (queryId) {
@@ -113,8 +121,11 @@ public class QueryRepository {
                 QUERY_9;
             case "query10" ->
                 QUERY_10;
-              case "query-calles" -> QUERY_2; // Ahora usa QUERY_2 para calles-distintas
-           
+            case "query-calles" ->
+                QUERY_2; // Ahora usa QUERY_2 para calles-distintas
+            case "query-sexos" ->
+                QUERY_SEXOS; // Nueva consulta
+
             default ->
                 throw new IllegalArgumentException("Query no encontrada: " + queryId);
         };

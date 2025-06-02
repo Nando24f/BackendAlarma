@@ -30,7 +30,7 @@ public class AccessControlService {
     }
 
     public boolean canExecuteQuery2() {
-        return canExecuteQuery(IpConfig.JUAN, "query-calles"); // Ahora verifica query-calles
+        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_2);
     }
 
     public boolean canExecuteQuery3() {
@@ -66,7 +66,11 @@ public class AccessControlService {
     }
 
     public boolean canExecuteQuery11() {
-        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_2); // Ahora verifica query2
+        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_CALLES);
+    }
+
+    public boolean canExecuteQuerySexos() {
+        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_SEXOS);
     }
 
     public boolean canExecuteQuery(String allowedUser, String requiredQuery) {
