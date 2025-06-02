@@ -139,22 +139,23 @@ public class TestingController {
     }
 
     // Elimina los métodos antiguos getCalles() y getCalles2() y añade este nuevo:
-    @GetMapping("/calles-distintas")
-    public ResponseEntity<List<String>> getCallesDistintas() {
-        if (!accessControlService.canExecuteQuery11()) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
-        try {
-            List<String> calles = jdbcTemplate.queryForList(
-                    queryRepository.getQuery("query11"),
-                    String.class
-            );
-            return new ResponseEntity<>(calles, HttpStatus.OK);
-        } catch (DataAccessException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    // Elimina los métodos antiguos getCalles() y getCalles2() y añade este nuevo:
+@GetMapping("/calles-distintas")
+public ResponseEntity<List<String>> getCallesDistintas() {
+    if (!accessControlService.canExecuteQuery11()) {
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
+
+    try {
+        List<String> calles = jdbcTemplate.queryForList(
+            queryRepository.getQuery("query-calles"), 
+            String.class
+        );
+        return new ResponseEntity<>(calles, HttpStatus.OK);
+    } catch (DataAccessException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+}
 
     // 8. Cantidad de vecinos de X calle (modificado para usar LIKE con %)
     @GetMapping("/vecinos/calle")
