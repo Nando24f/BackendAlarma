@@ -26,8 +26,8 @@ public class TestingController {
     private final QueryRepository queryRepository;
 
     public TestingController(JdbcTemplate jdbcTemplate,
-            AccessControlService accessControlService,
-            QueryRepository queryRepository) {
+                           AccessControlService accessControlService,
+                           QueryRepository queryRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.accessControlService = accessControlService;
         this.queryRepository = queryRepository;
@@ -139,9 +139,16 @@ public class TestingController {
     }
 
     @GetMapping("/calles")
-    public ResponseEntity<List<String>> getCalles() {
-        return ResponseEntity.ok(List.of("Calle 1", "Calle 2", "Calle 3"));
+public ResponseEntity<List<Map<String, Object>>> getCalles() {
+    try {
+        List<Map<String, Object>> calles = jdbcTemplate.queryForList(
+            queryRepository.getQuery("query11")
+        );
+        return new ResponseEntity<>(calles, HttpStatus.OK);
+    } catch (DataAccessException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
+}
 
     // 8. Cantidad de vecinos de X calle (modificado para usar LIKE con %)
     @GetMapping("/vecinos/calle")
@@ -152,8 +159,8 @@ public class TestingController {
 
         try {
             var results = jdbcTemplate.queryForList(
-                    queryRepository.getQuery("query8"),
-                    "%" + calle + "%"
+                queryRepository.getQuery("query8"), 
+                "%" + calle + "%"
             );
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
@@ -170,8 +177,8 @@ public class TestingController {
 
         try {
             var results = jdbcTemplate.queryForList(
-                    queryRepository.getQuery("query9"),
-                    "%" + calle + "%"
+                queryRepository.getQuery("query9"), 
+                "%" + calle + "%"
             );
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
@@ -185,11 +192,11 @@ public class TestingController {
         if (!accessControlService.canExecuteQuery10()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-
+    
         try {
             var results = jdbcTemplate.queryForList(
-                    queryRepository.getQuery("query10"),
-                    "%" + calle + "%"
+                queryRepository.getQuery("query10"), 
+                "%" + calle + "%"
             );
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
