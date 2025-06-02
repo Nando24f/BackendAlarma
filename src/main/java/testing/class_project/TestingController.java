@@ -138,7 +138,24 @@ public class TestingController {
         }
     }
 
-    // 8. Cantidad de vecinos de X calle
+     @GetMapping("/calles")
+    public ResponseEntity<List<String>> getCalles() {
+        if (!accessControlService.canExecuteQuery11()) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        try {
+            List<String> calles = jdbcTemplate.queryForList(
+                queryRepository.getQuery("query11"), 
+                String.class
+            );
+            return new ResponseEntity<>(calles, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // 8. Cantidad de vecinos de X calle (modificado para usar LIKE con %)
     @GetMapping("/vecinos/calle")
     public ResponseEntity<List<Map<String, Object>>> getVecinosPorCalle(@RequestParam String calle) {
         if (!accessControlService.canExecuteQuery8()) {
@@ -146,14 +163,17 @@ public class TestingController {
         }
 
         try {
-            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query8"), calle);
+            var results = jdbcTemplate.queryForList(
+                queryRepository.getQuery("query8"), 
+                "%" + calle + "%"
+            );
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    // 9. Cantidad de mujeres de X calle
+    // 9. Cantidad de mujeres de X calle (modificado para usar LIKE con %)
     @GetMapping("/usuarios/mujeres/calle")
     public ResponseEntity<List<Map<String, Object>>> getMujeresPorCalle(@RequestParam String calle) {
         if (!accessControlService.canExecuteQuery9()) {
@@ -161,22 +181,28 @@ public class TestingController {
         }
 
         try {
-            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query9"), calle);
+            var results = jdbcTemplate.queryForList(
+                queryRepository.getQuery("query9"), 
+                "%" + calle + "%"
+            );
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    // 10. Cantidad de hombres de X calle
+    // 10. Cantidad de hombres de X calle (modificado para usar LIKE con %)
     @GetMapping("/usuarios/hombres/calle")
     public ResponseEntity<List<Map<String, Object>>> getHombresPorCalle(@RequestParam String calle) {
         if (!accessControlService.canExecuteQuery10()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-
+    
         try {
-            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query10"), calle);
+            var results = jdbcTemplate.queryForList(
+                queryRepository.getQuery("query10"), 
+                "%" + calle + "%"
+            );
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

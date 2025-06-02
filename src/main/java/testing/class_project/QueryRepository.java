@@ -3,11 +3,12 @@ package testing.class_project;
 import org.springframework.stereotype.Component;
 
 /**
- * Centralized repository for database queries targeting the 'usuarios' and 'alarmas' database.
- * Keeps SQL organized and reusable across the application.
+ * Centralized repository for database queries targeting the 'usuarios' and
+ * 'alarmas' database. Keeps SQL organized and reusable across the application.
  */
 @Component
 public class QueryRepository {
+
     // Queries como constantes públicas
     public static final String QUERY_1 = """
             SELECT id, nombre, apellido, fecha_nacimiento, direccion, numero_casa, rut, sexo
@@ -73,19 +74,45 @@ public class QueryRepository {
             WHERE direccion LIKE CONCAT('%', ?, '%') AND sexo = 'Hombre';
             """;
 
+    public static final String QUERY_11 = """
+        SELECT DISTINCT 
+            CASE 
+                WHEN direccion REGEXP '[0-9]' THEN 
+                    TRIM(SUBSTRING_INDEX(direccion, CONCAT(
+                        REGEXP_SUBSTR(direccion, '[0-9]+'), 1))
+                ELSE 
+                    TRIM(direccion)
+            END AS calle
+        FROM usuarios
+        ORDER BY calle;
+        """;
+
     public String getQuery(String queryId) {
-        return switch(queryId) {
-            case "query1" -> QUERY_1;
-            case "query2" -> QUERY_2;
-            case "query3" -> QUERY_3;
-            case "query4" -> QUERY_4;
-            case "query5" -> QUERY_5;
-            case "query6" -> QUERY_6;
-            case "query7" -> QUERY_7;
-            case "query8" -> QUERY_8;
-            case "query9" -> QUERY_9;
-            case "query10" -> QUERY_10;
-            default -> throw new IllegalArgumentException("Query not found: " + queryId);
+        return switch (queryId) {
+            case "query1" ->
+                QUERY_1;
+            case "query2" ->
+                QUERY_2;
+            case "query3" ->
+                QUERY_3;
+            case "query4" ->
+                QUERY_4;
+            case "query5" ->
+                QUERY_5;
+            case "query6" ->
+                QUERY_6;
+            case "query7" ->
+                QUERY_7;
+            case "query8" ->
+                QUERY_8;
+            case "query9" ->
+                QUERY_9;
+            case "query10" ->
+                QUERY_10;
+            case "query11" ->
+                QUERY_11;
+            default ->
+                throw new IllegalArgumentException("Query not found: " + queryId);
         };
     }
 }
