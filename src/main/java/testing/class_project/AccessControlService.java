@@ -66,9 +66,6 @@ public class AccessControlService {
     public boolean canExecuteQuery11() {
         return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_11);
     }
-    public boolean canExecuteQuery12() {
-        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_12);
-    }
     public boolean canExecuteQuery(String allowedUser, String requiredQuery) {
         var userData = ipConfig.getCredentialsForIp(request.getRemoteAddr());
         var userName = userData.name();

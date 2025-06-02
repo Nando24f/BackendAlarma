@@ -85,9 +85,17 @@ public class QueryRepository {
 
     // Lista de calles distintas (sin duplicados)
     public static final String QUERY_11 = """
-        SELECT DISTINCT TRIM(direccion) AS calle
-        FROM usuarios
-        ORDER BY calle;
+        SELECT DISTINCT 
+        CASE 
+            WHEN direccion LIKE '%Calle%' THEN 
+                CONCAT('Calle ', SUBSTRING_INDEX(direccion, 'Calle ', -1))
+            WHEN direccion LIKE '%Av.%' OR direccion LIKE '%Avenida%' THEN 
+                CONCAT('Avenida ', SUBSTRING_INDEX(direccion, 'Avenida ', -1))
+            ELSE direccion 
+        END AS calle_formateada
+    FROM usuarios
+    WHERE direccion IS NOT NULL AND direccion != ''
+    ORDER BY calle_formateada;
     """;
 
     // Método para recuperar la consulta deseada por ID
@@ -104,8 +112,8 @@ public class QueryRepository {
             case "query9" -> QUERY_9;
             case "query10" -> QUERY_10;
             case "query11" -> QUERY_11;
-            case "query12" -> QUERY_11; // Asumiendo que QUERY_12 es igual a QUERY_11
-            default -> throw new IllegalArgumentException("Query no encontrada: " + queryId);
+            case "query12" -> QUERY_11; 
+            default -> throw new IllegalArgumentException("Query no encontrada: "  + queryId);
         };
     }
 }

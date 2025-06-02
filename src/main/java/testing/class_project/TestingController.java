@@ -26,8 +26,8 @@ public class TestingController {
     private final QueryRepository queryRepository;
 
     public TestingController(JdbcTemplate jdbcTemplate,
-                           AccessControlService accessControlService,
-                           QueryRepository queryRepository) {
+            AccessControlService accessControlService,
+            QueryRepository queryRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.accessControlService = accessControlService;
         this.queryRepository = queryRepository;
@@ -138,40 +138,23 @@ public class TestingController {
         }
     }
 
-     @GetMapping("/calles")
-    public ResponseEntity<List<String>> getCalles() {
+    // Elimina los métodos antiguos getCalles() y getCalles2() y añade este nuevo:
+    @GetMapping("/calles-distintas")
+    public ResponseEntity<List<String>> getCallesDistintas() {
         if (!accessControlService.canExecuteQuery11()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
         try {
             List<String> calles = jdbcTemplate.queryForList(
-                queryRepository.getQuery("query11"), 
-                String.class
+                    queryRepository.getQuery("query11"),
+                    String.class
             );
             return new ResponseEntity<>(calles, HttpStatus.OK);
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-    @GetMapping("/calles/lista")
-    public ResponseEntity<List<String>> getCalles2() {
-        if (!accessControlService.canExecuteQuery11()) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
-        try {
-            List<String> calles = jdbcTemplate.queryForList(
-                queryRepository.getQuery("query11"), 
-                String.class
-            );
-            return new ResponseEntity<>(calles, HttpStatus.OK);
-        } catch (DataAccessException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
 
     // 8. Cantidad de vecinos de X calle (modificado para usar LIKE con %)
     @GetMapping("/vecinos/calle")
@@ -182,8 +165,8 @@ public class TestingController {
 
         try {
             var results = jdbcTemplate.queryForList(
-                queryRepository.getQuery("query8"), 
-                "%" + calle + "%"
+                    queryRepository.getQuery("query8"),
+                    "%" + calle + "%"
             );
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
@@ -200,8 +183,8 @@ public class TestingController {
 
         try {
             var results = jdbcTemplate.queryForList(
-                queryRepository.getQuery("query9"), 
-                "%" + calle + "%"
+                    queryRepository.getQuery("query9"),
+                    "%" + calle + "%"
             );
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
@@ -215,11 +198,11 @@ public class TestingController {
         if (!accessControlService.canExecuteQuery10()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-    
+
         try {
             var results = jdbcTemplate.queryForList(
-                queryRepository.getQuery("query10"), 
-                "%" + calle + "%"
+                    queryRepository.getQuery("query10"),
+                    "%" + calle + "%"
             );
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
