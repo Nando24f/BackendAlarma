@@ -130,7 +130,7 @@ public class TestingController {
         if (!accessControlService.canExecuteQuery6()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        var managers = jdbcTemplate.queryForList(queryRepository.getQuery("query-calles"));
+        var managers = jdbcTemplate.queryForList(queryRepository.getQuery("query6"));
         return ResponseEntity.ok(managers);
     }
 
