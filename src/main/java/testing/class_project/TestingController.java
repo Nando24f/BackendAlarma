@@ -198,7 +198,7 @@ public class TestingController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         try {
-            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query-calles"));
+            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query11"));
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

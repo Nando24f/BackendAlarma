@@ -66,7 +66,7 @@ public class AccessControlService {
     }
 
     public boolean canExecuteQuery11() {
-        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_CALLES);
+        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_11);
     }
 
     public boolean canExecuteQuerySexos() {

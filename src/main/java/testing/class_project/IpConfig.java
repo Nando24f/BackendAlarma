@@ -29,13 +29,14 @@ public class IpConfig {
     public static final String QUERY_8 = "query8";
     public static final String QUERY_9 = "query9";
     public static final String QUERY_10 = "query10";
-
+    public static final String QUERY_11 = "query11"; // Cambiado de QUERY_11 a QUERY_CALLES
+    public static final String QUERY_SEXOS = "query-sexos";
 
 
     public static final Map<String, IpData> IP_CREDENTIAL_MAP = Map.of(
             JUAN_IP, new IpData(JUAN,
                     List.of(QUERY_1, QUERY_3, QUERY_4, QUERY_5,
-                            QUERY_6, QUERY_7, QUERY_8, QUERY_9, QUERY_10, QUERY_2), // Añadido QUERY_CALLES
+                            QUERY_6, QUERY_7, QUERY_8, QUERY_9, QUERY_10, QUERY_2,QUERY_11), // Añadido QUERY_CALLES
                     "mypass543")
     );
 

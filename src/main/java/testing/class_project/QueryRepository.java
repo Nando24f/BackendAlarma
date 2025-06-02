@@ -83,7 +83,7 @@ public class QueryRepository {
         WHERE direccion LIKE CONCAT('%', ?, '%') AND sexo = 'Hombre';
     """;
 
-    public static final String QUERY_CALLES = """
+    public static final String QUERY_11 = """
     SELECT DISTINCT TRIM(direccion) AS calle
     FROM usuarios
     WHERE direccion IS NOT NULL AND direccion != ''
@@ -103,7 +103,7 @@ public class QueryRepository {
             case "query1" ->
                 QUERY_1;
             case "query2" ->
-                QUERY_CALLES;
+                QUERY_2;
             case "query3" ->
                 QUERY_3;
             case "query4" ->
@@ -120,8 +120,8 @@ public class QueryRepository {
                 QUERY_9;
             case "query10" ->
                 QUERY_10;
-              case "query-calles" -> 
-              QUERY_2; // Ahora usa QUERY_2 para calles-distintas
+              case "query11" -> 
+                QUERY_11; // Ahora usa QUERY_2 para calles-distintas
             case "query-sexos" -> 
                 QUERY_SEXOS; // Nueva consulta
 
