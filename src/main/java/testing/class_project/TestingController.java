@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 /**
  * REST Controller for alarmas vecinales operations.
  */
@@ -29,6 +31,23 @@ public class TestingController {
                               QueryRepository queryRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.queryRepository = queryRepository;
+    }
+
+    private AccessControlService accessControlService;
+
+    @GetMapping("/test")
+    public ResponseEntity<String> testEndpoint(HttpServletRequest request) {
+        // ✅ Obtener IP real desde encabezado si viene de proxy
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null || ip.isEmpty()) {
+            ip = request.getRemoteAddr();
+        }
+
+        if (!accessControlService.isAllowed(ip)) {
+            return new ResponseEntity<>("Forbidden", HttpStatus.FORBIDDEN);
+        }
+
+        return ResponseEntity.ok("Acceso permitido desde IP: " + ip);
     }
 
     // 1. Últimas 10 alarmas activas

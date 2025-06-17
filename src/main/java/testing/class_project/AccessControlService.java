@@ -1,6 +1,8 @@
 package testing.class_project;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,11 +16,20 @@ public class AccessControlService {
     private final HttpServletRequest request;
     private final IpConfig ipConfig;
 
-    @Autowired
+    private final List<String> allowedIps = new ArrayList<>();
+
     public AccessControlService(HttpServletRequest request, IpConfig ipConfig) {
         this.request = request;
         this.ipConfig = ipConfig;
+        allowedIps.add(IpConfig.JUAN_IP); // <- IP autorizada
     }
+
+    public boolean isAllowed(String ip) {
+        System.out.println("IP recibida para verificación: " + ip);
+        return allowedIps.contains(ip);
+    }
+
+   
 
     /**
      * Checks if current client can execute query1
@@ -64,7 +75,6 @@ public class AccessControlService {
     public boolean canExecuteQuery10() {
         return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_10);
     }
-
 
     public boolean canExecuteQuery(String allowedUser, String requiredQuery) {
         var userData = ipConfig.getCredentialsForIp(request.getRemoteAddr());
