@@ -26,43 +26,43 @@ public class AccessControlService {
      * @return true if client IP is mapped to credentials authorized for query1
      */
     public boolean canExecuteQuery1() {
-        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_1);
+        return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_1);
     }
 
     public boolean canExecuteQuery2() {
-        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_2);
+        return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_2);
     }
 
     public boolean canExecuteQuery3() {
-        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_3);
+        return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_3);
     }
 
     public boolean canExecuteQuery4() {
-        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_4);
+        return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_4);
     }
 
     public boolean canExecuteQuery5() {
-        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_5);
+        return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_5);
     }
 
     public boolean canExecuteQuery6() {
-        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_6);
+        return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_6);
     }
 
     public boolean canExecuteQuery7() {
-        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_7);
+        return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_7);
     }
 
     public boolean canExecuteQuery8() {
-        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_8);
+        return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_8);
     }
 
     public boolean canExecuteQuery9() {
-        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_9);
+        return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_9);
     }
 
     public boolean canExecuteQuery10() {
-        return canExecuteQuery(IpConfig.JUAN, IpConfig.QUERY_10);
+        return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_10);
     }
 
 
