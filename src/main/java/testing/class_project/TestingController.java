@@ -3,6 +3,7 @@ package testing.class_project;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-/**
- * REST Controller for alarmas vecinales operations.
- */
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api")
@@ -26,51 +24,60 @@ public class TestingController {
 
     private final JdbcTemplate jdbcTemplate;
     private final QueryRepository queryRepository;
+    private final AccessControlService accessControlService;
 
+    @Autowired
     public TestingController(JdbcTemplate jdbcTemplate,
-                              QueryRepository queryRepository) {
+                             QueryRepository queryRepository,
+                             AccessControlService accessControlService) {
         this.jdbcTemplate = jdbcTemplate;
         this.queryRepository = queryRepository;
+        this.accessControlService = accessControlService;
     }
 
-    private AccessControlService accessControlService;
+    private String extraerIPCliente(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null || ip.isEmpty()) {
+            ip = request.getRemoteAddr();
+        }
+        if (ip.contains(",")) {
+            ip = ip.split(",")[0].trim();
+        }
+        System.out.println("IP que llega: " + ip);
+        return ip;
+    }
+
+    private boolean accesoDenegado(HttpServletRequest request) {
+        String ip = extraerIPCliente(request);
+        return !accessControlService.isAllowed(ip);
+    }
 
     @GetMapping("/test")
     public ResponseEntity<String> testEndpoint(HttpServletRequest request) {
-        // ✅ Obtener IP real desde encabezado si viene de proxy
-        String ip = request.getHeader("X-Forwarded-For");
-        if (ip == null || ip.isEmpty()) {
-            ip = request.getRemoteAddr();
-        }
-
-        if (!accessControlService.isAllowed(ip)) {
+        if (accesoDenegado(request)) {
             return new ResponseEntity<>("Forbidden", HttpStatus.FORBIDDEN);
         }
-
-        return ResponseEntity.ok("Acceso permitido desde IP: " + ip);
+        return ResponseEntity.ok("Acceso permitido al endpoint /test");
     }
 
-    // 1. Últimas 10 alarmas activas
     @GetMapping("/alarmas/activas")
-    public ResponseEntity<String> obtenerAlarmas(HttpServletRequest request) {
-        // Obtener IP real si se usa proxy
-        String ip = request.getHeader("X-Forwarded-For");
-        if (ip == null || ip.isEmpty()) {
-            ip = request.getRemoteAddr();
+    public ResponseEntity<List<Map<String, Object>>> obtenerAlarmas(HttpServletRequest request) {
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-
-        System.out.println("IP que llega: " + ip);
-
-        if (!accessControlService.isAllowed(ip)) {
-            return new ResponseEntity<>("Forbidden", HttpStatus.FORBIDDEN);
+        try {
+            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query1"));
+            return new ResponseEntity<>(results, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
-        // Aquí va la lógica real para devolver alarmas activas
-        return ResponseEntity.ok("Listado de alarmas activas");
     }
-    // 2. Alarmas con ubicación geográfica
+
     @GetMapping("/alarmas/mapa")
-    public ResponseEntity<List<Map<String, Object>>> getAlarmasConUbicacion() {
+    public ResponseEntity<List<Map<String, Object>>> getAlarmasConUbicacion(HttpServletRequest request) {
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         try {
             var results = jdbcTemplate.queryForList(queryRepository.getQuery("query2"));
             return new ResponseEntity<>(results, HttpStatus.OK);
@@ -79,9 +86,11 @@ public class TestingController {
         }
     }
 
-    // 3. Alarmas por usuario específico
     @GetMapping("/alarmas/usuario/{id}")
-    public ResponseEntity<List<Map<String, Object>>> getAlarmasPorUsuario(@PathVariable int id) {
+    public ResponseEntity<List<Map<String, Object>>> getAlarmasPorUsuario(@PathVariable int id, HttpServletRequest request) {
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         try {
             var results = jdbcTemplate.queryForList(queryRepository.getQuery("query3"), id);
             return new ResponseEntity<>(results, HttpStatus.OK);
@@ -90,9 +99,11 @@ public class TestingController {
         }
     }
 
-    // 4. Alarmas por rango de fechas
     @GetMapping("/alarmas/rango")
-    public ResponseEntity<List<Map<String, Object>>> getAlarmasPorRango(@RequestParam String desde, @RequestParam String hasta) {
+    public ResponseEntity<List<Map<String, Object>>> getAlarmasPorRango(@RequestParam String desde, @RequestParam String hasta, HttpServletRequest request) {
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         try {
             var results = jdbcTemplate.queryForList(queryRepository.getQuery("query4"), desde, hasta);
             return new ResponseEntity<>(results, HttpStatus.OK);
@@ -101,9 +112,11 @@ public class TestingController {
         }
     }
 
-    // 5. Total de alarmas por categoría
     @GetMapping("/alarmas/categorias")
-    public ResponseEntity<List<Map<String, Object>>> getConteoPorCategoria() {
+    public ResponseEntity<List<Map<String, Object>>> getConteoPorCategoria(HttpServletRequest request) {
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         try {
             var results = jdbcTemplate.queryForList(queryRepository.getQuery("query5"));
             return new ResponseEntity<>(results, HttpStatus.OK);
@@ -112,9 +125,11 @@ public class TestingController {
         }
     }
 
-    // 6. Total de alarmas por estado
     @GetMapping("/alarmas/estados")
-    public ResponseEntity<List<Map<String, Object>>> getConteoPorEstado() {
+    public ResponseEntity<List<Map<String, Object>>> getConteoPorEstado(HttpServletRequest request) {
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         try {
             var results = jdbcTemplate.queryForList(queryRepository.getQuery("query6"));
             return new ResponseEntity<>(results, HttpStatus.OK);
@@ -123,9 +138,11 @@ public class TestingController {
         }
     }
 
-    // 7. Total de alarmas por usuario
     @GetMapping("/alarmas/por_usuario")
-    public ResponseEntity<List<Map<String, Object>>> getTotalPorUsuario() {
+    public ResponseEntity<List<Map<String, Object>>> getTotalPorUsuario(HttpServletRequest request) {
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         try {
             var results = jdbcTemplate.queryForList(queryRepository.getQuery("query7"));
             return new ResponseEntity<>(results, HttpStatus.OK);
@@ -134,9 +151,11 @@ public class TestingController {
         }
     }
 
-    // 8. Obtener alarma por ID
     @GetMapping("/alarmas/{id}")
-    public ResponseEntity<List<Map<String, Object>>> getAlarmaPorId(@PathVariable int id) {
+    public ResponseEntity<List<Map<String, Object>>> getAlarmaPorId(@PathVariable int id, HttpServletRequest request) {
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         try {
             var results = jdbcTemplate.queryForList(queryRepository.getQuery("query8"), id);
             return new ResponseEntity<>(results, HttpStatus.OK);
@@ -145,9 +164,11 @@ public class TestingController {
         }
     }
 
-    // 9. Alarmas críticas no resueltas
     @GetMapping("/alarmas/criticas")
-    public ResponseEntity<List<Map<String, Object>>> getCriticasNoResueltas() {
+    public ResponseEntity<List<Map<String, Object>>> getCriticasNoResueltas(HttpServletRequest request) {
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         try {
             var results = jdbcTemplate.queryForList(queryRepository.getQuery("query9"));
             return new ResponseEntity<>(results, HttpStatus.OK);
@@ -156,9 +177,11 @@ public class TestingController {
         }
     }
 
-    // 10. Alarmas resueltas en los últimos 7 días
     @GetMapping("/alarmas/resueltas")
-    public ResponseEntity<List<Map<String, Object>>> getResueltasUltimos7Dias() {
+    public ResponseEntity<List<Map<String, Object>>> getResueltasUltimos7Dias(HttpServletRequest request) {
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         try {
             var results = jdbcTemplate.queryForList(queryRepository.getQuery("query10"));
             return new ResponseEntity<>(results, HttpStatus.OK);
