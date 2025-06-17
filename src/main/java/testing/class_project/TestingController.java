@@ -52,15 +52,22 @@ public class TestingController {
 
     // 1. Últimas 10 alarmas activas
     @GetMapping("/alarmas/activas")
-    public ResponseEntity<List<Map<String, Object>>> getUltimasAlarmasActivas() {
-        try {
-            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query1"));
-            return new ResponseEntity<>(results, HttpStatus.OK);
-        } catch (DataAccessException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    public ResponseEntity<String> obtenerAlarmas(HttpServletRequest request) {
+        // Obtener IP real si se usa proxy
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null || ip.isEmpty()) {
+            ip = request.getRemoteAddr();
         }
-    }
 
+        System.out.println("IP que llega: " + ip);
+
+        if (!accessControlService.isAllowed(ip)) {
+            return new ResponseEntity<>("Forbidden", HttpStatus.FORBIDDEN);
+        }
+
+        // Aquí va la lógica real para devolver alarmas activas
+        return ResponseEntity.ok("Listado de alarmas activas");
+    }
     // 2. Alarmas con ubicación geográfica
     @GetMapping("/alarmas/mapa")
     public ResponseEntity<List<Map<String, Object>>> getAlarmasConUbicacion() {
