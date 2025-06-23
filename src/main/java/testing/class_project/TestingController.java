@@ -189,4 +189,30 @@ public class TestingController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping("/alarmas/categorias_distintas")
+    public ResponseEntity<List<Map<String, Object>>> getCategoriasAlarmas(HttpServletRequest request) {
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        try {
+            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query11"));
+            return new ResponseEntity<>(results, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/alarmas/usuarios")
+    public ResponseEntity<List<Map<String, Object>>> getUsuariosConAlarmas(HttpServletRequest request   ) {
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        try {
+            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query12"));
+            return new ResponseEntity<>(results, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
