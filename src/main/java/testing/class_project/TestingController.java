@@ -216,7 +216,7 @@ public class TestingController {
         }
     }
 
-    @GetMapping("/alarmas/por_categoria")
+    @GetMapping("/alarmas/porcategoria")
     public ResponseEntity<List<Map<String, Object>>> getAlarmasPorCategoria(@RequestParam String categoria, HttpServletRequest request) {
         if (accesoDenegado(request)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
