@@ -151,7 +151,7 @@ public class TestingController {
         }
     }
 
-    @GetMapping("/alarmas/{id}")
+    @GetMapping("/alarmas/id/{id}")
     public ResponseEntity<List<Map<String, Object>>> getAlarmaPorId(@PathVariable int id, HttpServletRequest request) {
         if (accesoDenegado(request)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
