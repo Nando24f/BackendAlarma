@@ -96,6 +96,12 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
     FROM alarmas;
 """;
 
+    public static final String QUERY_13 = """
+    SELECT *
+    FROM alarmas
+    WHERE categoria = ?;
+""";
+
     // Método para recuperar la consulta deseada por ID
     public String getQuery(String queryId) {
         return switch (queryId) {
@@ -123,6 +129,9 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
                 QUERY_11;
             case "query12" ->
                 QUERY_12;
+            case "query13" -> 
+                QUERY_13;
+
             default ->
                 throw new IllegalArgumentException("Query no encontrada: " + queryId);
         };

@@ -28,8 +28,8 @@ public class TestingController {
 
     @Autowired
     public TestingController(JdbcTemplate jdbcTemplate,
-                             QueryRepository queryRepository,
-                             AccessControlService accessControlService) {
+            QueryRepository queryRepository,
+            AccessControlService accessControlService) {
         this.jdbcTemplate = jdbcTemplate;
         this.queryRepository = queryRepository;
         this.accessControlService = accessControlService;
@@ -204,7 +204,7 @@ public class TestingController {
     }
 
     @GetMapping("/alarmas/usuarios")
-    public ResponseEntity<List<Map<String, Object>>> getUsuariosConAlarmas(HttpServletRequest request   ) {
+    public ResponseEntity<List<Map<String, Object>>> getUsuariosConAlarmas(HttpServletRequest request) {
         if (accesoDenegado(request)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
@@ -215,4 +215,18 @@ public class TestingController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping("/alarmas/por_categoria")
+    public ResponseEntity<List<Map<String, Object>>> getAlarmasPorCategoria(@RequestParam String categoria, HttpServletRequest request) {
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        try {
+            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query13"), categoria);
+            return new ResponseEntity<>(results, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }
