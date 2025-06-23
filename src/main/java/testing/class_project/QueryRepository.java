@@ -102,6 +102,21 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
     WHERE categoria = ?;
 """;
 
+    public static final String QUERY_14 = """
+    SELECT * 
+    FROM alarmas 
+    WHERE LOWER(descripcion) LIKE LOWER(CONCAT('%', ?, '%'));
+""";
+
+public static final String QUERY_15 = """
+    SELECT * FROM alarmas
+    WHERE (? IS NULL OR categoria = ?)
+      AND (? IS NULL OR LOWER(descripcion) LIKE LOWER(CONCAT('%', ?, '%')))
+      AND (? IS NULL OR fecha >= ?)
+      AND (? IS NULL OR fecha <= ?)
+      AND (? IS NULL OR usuario_id = ?);
+""";
+
     // Método para recuperar la consulta deseada por ID
     public String getQuery(String queryId) {
         return switch (queryId) {
@@ -131,7 +146,10 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
                 QUERY_12;
             case "query13" -> 
                 QUERY_13;
-
+            case "query14" ->
+                QUERY_14;
+            case "query15" ->
+                QUERY_15;
             default ->
                 throw new IllegalArgumentException("Query no encontrada: " + queryId);
         };

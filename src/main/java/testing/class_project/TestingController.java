@@ -229,4 +229,45 @@ public class TestingController {
         }
     }
 
+    @GetMapping("/alarmas/buscar")
+    public ResponseEntity<List<Map<String, Object>>> buscarPorTexto(@RequestParam("texto") String texto, HttpServletRequest request) {
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        try {
+            var results = jdbcTemplate.queryForList(queryRepository.getQuery("query14"), texto);
+            return new ResponseEntity<>(results, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/alarmas/filtradas")
+    public ResponseEntity<List<Map<String, Object>>> filtrarAlarmas(
+            @RequestParam(required = false) String categoria,
+            @RequestParam(required = false) String texto,
+            @RequestParam(required = false) String fechaInicio,
+            @RequestParam(required = false) String fechaFin,
+            @RequestParam(required = false) Integer autor,
+            HttpServletRequest request
+    ) {
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        try {
+            var results = jdbcTemplate.queryForList(
+                    queryRepository.getQuery("query15"),
+                    categoria, categoria,
+                    texto, texto,
+                    fechaInicio, fechaInicio,
+                    fechaFin, fechaFin,
+                    autor, autor
+            );
+            return new ResponseEntity<>(results, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

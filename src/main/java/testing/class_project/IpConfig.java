@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 public class IpConfig {
 
     public record IpData(String name, List<String> queries, String password) {
+
     }
 
     public static final String JUAN_IP = "200.13.4.251";
@@ -30,15 +31,16 @@ public class IpConfig {
     public static final String QUERY_9 = "query9";
     public static final String QUERY_10 = "query10";
     public static final String QUERY_11 = "query11";
-    public static final String QUERY_12 = "query12"; 
-    public static final String QUERY_13 = "query13"; 
-
+    public static final String QUERY_12 = "query12";
+    public static final String QUERY_13 = "query13";
+    public static final String QUERY_14 = "query14";
+    public static final String QUERY_15 = "query15";
 
     public static final Map<String, IpData> IP_CREDENTIAL_MAP = Map.of(
             JUAN_IP, new IpData(JUAN,
                     List.of(QUERY_1, QUERY_3, QUERY_4, QUERY_5,
-                            QUERY_6, QUERY_7, QUERY_8, QUERY_9, QUERY_10, QUERY_2, QUERY_11, QUERY_12, QUERY_13), 
-                                               "mypass543")
+                            QUERY_6, QUERY_7, QUERY_8, QUERY_9, QUERY_10, QUERY_2, QUERY_11, QUERY_12, QUERY_13, QUERY_14, QUERY_15),
+                    "mypass543")
     );
 
     public static final IpData DEFAULT_CREDENTIALS
