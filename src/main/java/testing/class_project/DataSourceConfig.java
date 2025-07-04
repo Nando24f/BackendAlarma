@@ -68,7 +68,7 @@ public class DataSourceConfig {
 
     private DataSource createDataSource(String username, String password) {
         var dataSource = new org.apache.tomcat.jdbc.pool.DataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/AlarmaVecinal?useSSL=false&serverTimezone=UTC");
+        dataSource.setUrl("jdbc:mysql://200.13.4.221:3306/AlarmaVecinal?useSSL=false&serverTimezone=UTC");
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUsername(username);
         dataSource.setPassword(password);
