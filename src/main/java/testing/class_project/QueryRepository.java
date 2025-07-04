@@ -95,19 +95,22 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
     SELECT DISTINCT nombre_usuario
     FROM alarmas;
 """;
-
+// Consultar alarmas por categoría
+    // Permite filtrar alarmas por una categoría específica
     public static final String QUERY_13 = """
     SELECT *
     FROM alarmas
     WHERE categoria = ?;
 """;
-
+// Consultar alarmas por descripción (búsqueda de texto)
+    // Permite buscar alarmas que contengan un texto específico en la descripción
     public static final String QUERY_14 = """
     SELECT * 
     FROM alarmas 
     WHERE LOWER(descripcion) LIKE LOWER(CONCAT('%', ?, '%'));
 """;
-
+// Consultar alarmas con múltiples filtros opcionales
+    // Permite filtrar por categoría, descripción, rango de fechas y usuario
 public static final String QUERY_15 = """
     SELECT * FROM alarmas
     WHERE (? IS NULL OR categoria = ?)
