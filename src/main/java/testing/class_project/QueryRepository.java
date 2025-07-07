@@ -19,7 +19,7 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
 """;
 
     public static final String QUERY_2 = """
-    SELECT 
+  SELECT 
     a.id,
     a.descripcion,
     a.fecha,
@@ -27,9 +27,9 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
     a.longitud,
     c.nombre AS categoria,
     a.usuario_id AS autor
-FROM alarma a
-JOIN categoria c ON a.categoria_id = c.id
-WHERE a.latitud IS NOT NULL AND a.longitud IS NOT NULL
+  FROM alarma a
+  JOIN categoria c ON a.categoria_id = c.id
+  WHERE a.latitud IS NOT NULL AND a.longitud IS NOT NULL
 """;
 
 // Ver todas las alarmas de un usuario específico
