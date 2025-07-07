@@ -20,17 +20,20 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
 
 // Mostrar todas las alarmas con coordenadas (para mapa)
     public static final String QUERY_2 = """
-     SELECT 
-        a.id,
-        a.descripcion,
-        a.fecha,
-        a.latitud,
-        a.longitud,
-        c.nombre AS categoria,
-        a.usuario_id AS autor
-    FROM alarma a
-    JOIN categoria c ON a.categoria_id = c.id
-    WHERE a.latitud IS NOT NULL AND a.longitud IS NOT NULL
+    SELECT 
+    a.id,
+    a.descripcion_evento AS descripcion,
+    a.fecha,
+    a.latitud,
+    a.longitud,
+    a.categoria,
+    a.prioridad,
+    a.estado,
+    u.nombre AS nombre_autor,
+    u.apellido AS apellido_autor,
+FROM alarmas a
+JOIN usuarios u ON a.usuario_id = u.id
+WHERE a.latitud IS NOT NULL AND a.longitud IS NOT NULL;
 """;
 
 // Ver todas las alarmas de un usuario específico
