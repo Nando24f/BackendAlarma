@@ -18,21 +18,19 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
     LIMIT 10;
 """;
 
-public static final String QUERY_2 = """
+    public static final String QUERY_2 = """
     SELECT 
-        a.id,
-        a.descripcion_evento AS descripcion,
-        a.fecha,
-        a.hora,
-        a.latitud,
-        a.longitud,
-        a.categoria,
-        CONCAT(u.nombre, ' ', u.apellido) AS autor
-    FROM alarmas a
-    JOIN usuarios u ON a.usuario_id = u.id
-    WHERE a.latitud IS NOT NULL AND a.longitud IS NOT NULL
+    a.id,
+    a.descripcion,
+    a.fecha,
+    a.latitud,
+    a.longitud,
+    c.nombre AS categoria,
+    a.usuario_id AS autor
+FROM alarma a
+JOIN categoria c ON a.categoria_id = c.id
+WHERE a.latitud IS NOT NULL AND a.longitud IS NOT NULL
 """;
-
 
 // Ver todas las alarmas de un usuario específico
     public static final String QUERY_3 = """
@@ -120,7 +118,7 @@ public static final String QUERY_2 = """
 """;
 // Consultar alarmas con múltiples filtros opcionales
     // Permite filtrar por categoría, descripción, rango de fechas y usuario
-public static final String QUERY_15 = """
+    public static final String QUERY_15 = """
     SELECT * FROM alarmas
     WHERE (? IS NULL OR categoria = ?)
       AND (? IS NULL OR LOWER(descripcion) LIKE LOWER(CONCAT('%', ?, '%')))
@@ -156,7 +154,7 @@ public static final String QUERY_15 = """
                 QUERY_11;
             case "query12" ->
                 QUERY_12;
-            case "query13" -> 
+            case "query13" ->
                 QUERY_13;
             case "query14" ->
                 QUERY_14;
