@@ -18,7 +18,7 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
     LIMIT 10;
 """;
 
-   public static final String QUERY_2 = """
+ public static final String QUERY_2 = """
   SELECT 
     a.id,
     a.descripcion_evento AS descripcion,
