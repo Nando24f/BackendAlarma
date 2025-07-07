@@ -19,16 +19,19 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
 """;
 
  public static final String QUERY_2 = """
-  SELECT 
-    a.id,
-    a.descripcion_evento AS descripcion,
-    a.fecha,
-    a.latitud,
-    a.longitud,
-    a.categoria,
-    a.usuario_id AS autor
-  FROM alarma a
-  WHERE a.latitud IS NOT NULL AND a.longitud IS NOT NULL
+    SELECT 
+        a.id,
+        a.descripcion_evento AS descripcion,
+        a.fecha,
+        a.latitud,
+        a.longitud,
+        a.estado,
+        a.prioridad,
+        a.categoria,
+        CONCAT(u.nombre, ' ', u.apellido) AS autor
+    FROM alarmas a
+    LEFT JOIN usuarios u ON a.usuario_id = u.id
+    WHERE a.latitud IS NOT NULL AND a.longitud IS NOT NULL
 """;
 
 
