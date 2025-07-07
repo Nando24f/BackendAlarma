@@ -82,8 +82,10 @@ public class TestingController {
             var results = jdbcTemplate.queryForList(queryRepository.getQuery("query2"));
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (DataAccessException e) {
+            e.printStackTrace();  // <--- TEMPORAL para debug
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+
     }
 
     @GetMapping("/alarmas/usuario/{id}")
