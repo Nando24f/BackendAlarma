@@ -129,6 +129,26 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
       AND (? IS NULL OR fecha <= ?)
       AND (? IS NULL OR usuario_id = ?);
 """;
+    
+    public static final String QUERY_16 = """
+    SELECT *
+    FROM usuarios_login
+    WHERE rut = ? AND clave = ?;
+""";
+
+    public static final String QUERY_17 = """
+    INSERT INTO usuarios_login (rut, clave, categoria)
+    VALUES (?, ?, ?);
+""";
+
+    public static final String QUERY_18 = """
+    INSERT INTO usuarios_datos (
+        nombre_completo, rut, direccion, email, telefono,
+        contacto_emergencia_nombre, contacto_emergencia_direccion,
+        contacto_emergencia_email, contacto_emergencia_telefono
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+""";
 
     // Método para recuperar la consulta deseada por ID
     public String getQuery(String queryId) {
