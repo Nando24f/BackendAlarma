@@ -351,4 +351,26 @@ public ResponseEntity<String> crearUsuarioDatos(
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+@GetMapping("/login/verificar/admin")
+    public ResponseEntity<Map<String, Object>> verificarLoginAdmin(
+        @RequestParam String rut,
+        @RequestParam String clave,
+        HttpServletRequest request) {
+
+    if (accesoDenegado(request)) {
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
+    try {
+        var resultado = jdbcTemplate.queryForList(
+                queryRepository.getQuery("query19"), rut, clave
+        );
+        if (resultado.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(resultado.get(0), HttpStatus.OK);
+    } catch (DataAccessException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+}
 }
