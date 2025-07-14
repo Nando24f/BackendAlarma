@@ -351,7 +351,7 @@ public ResponseEntity<String> crearUsuarioDatos(
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-@GetMapping("/login/verificar/admin")
+@GetMapping("alarmas/login/verificar/admin")
     public ResponseEntity<Map<String, Object>> verificarLoginAdmin(
         @RequestParam String rut,
         @RequestParam String clave,
