@@ -245,84 +245,83 @@ public class TestingController {
     }
 
     @GetMapping("/login/verificar")
-public ResponseEntity<Map<String, Object>> verificarLogin(
-        @RequestParam String rut,
-        @RequestParam String clave,
-        HttpServletRequest request) {
+    public ResponseEntity<Map<String, Object>> verificarLogin(
+            @RequestParam String rut,
+            @RequestParam String clave,
+            HttpServletRequest request) {
 
-    if (accesoDenegado(request)) {
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-    }
-
-    try {
-        var resultado = jdbcTemplate.queryForList(
-                queryRepository.getQuery("query16"), // Verifica rut + clave
-                rut, clave
-        );
-        if (resultado.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        return new ResponseEntity<>(resultado.get(0), HttpStatus.OK);
-    } catch (DataAccessException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
-}
 
-@GetMapping("/login/crear")
-public ResponseEntity<String> crearUsuarioLogin(
-        @RequestParam String rut,
-        @RequestParam String clave,
-        @RequestParam String categoria,
-        HttpServletRequest request) {
-
-    if (accesoDenegado(request)) {
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        try {
+            var resultado = jdbcTemplate.queryForList(
+                    queryRepository.getQuery("query16"), // Verifica rut + clave
+                    rut, clave
+            );
+            if (resultado.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            return new ResponseEntity<>(resultado.get(0), HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
-    try {
-        int filas = jdbcTemplate.update(
-                queryRepository.getQuery("query17"), // Inserta en usuarios_login
-                rut, clave, categoria
-        );
-        return filas > 0
-                ? ResponseEntity.ok("Usuario creado correctamente")
-                : ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo crear el usuario");
-    } catch (DataAccessException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
-}
+    @GetMapping("/login/crear")
+    public ResponseEntity<String> crearUsuarioLogin(
+            @RequestParam String rut,
+            @RequestParam String clave,
+            @RequestParam String categoria,
+            HttpServletRequest request) {
 
-@GetMapping("/usuario/datos/crear")
-public ResponseEntity<String> crearUsuarioDatos(
-        @RequestParam String nombre,
-        @RequestParam String rut,
-        @RequestParam String direccion,
-        @RequestParam String email,
-        @RequestParam String telefono,
-        @RequestParam String contactoNombre,
-        @RequestParam String contactoDireccion,
-        @RequestParam String contactoEmail,
-        @RequestParam String contactoTelefono,
-        HttpServletRequest request) {
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
 
-    if (accesoDenegado(request)) {
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        try {
+            int filas = jdbcTemplate.update(
+                    queryRepository.getQuery("query17"), // Inserta en usuarios_login
+                    rut, clave, categoria
+            );
+            return filas > 0
+                    ? ResponseEntity.ok("Usuario creado correctamente")
+                    : ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo crear el usuario");
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
-    try {
-        int filas = jdbcTemplate.update(
-                queryRepository.getQuery("query18"), // Inserta en usuarios_datos
-                nombre, rut, direccion, email, telefono,
-                contactoNombre, contactoDireccion, contactoEmail, contactoTelefono
-        );
-        return filas > 0
-                ? ResponseEntity.ok("Datos personales guardados correctamente")
-                : ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudieron guardar los datos");
-    } catch (DataAccessException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
-}
+    @GetMapping("/usuario/datos/crear")
+    public ResponseEntity<String> crearUsuarioDatos(
+            @RequestParam String nombre,
+            @RequestParam String rut,
+            @RequestParam String direccion,
+            @RequestParam String email,
+            @RequestParam String telefono,
+            @RequestParam String contactoNombre,
+            @RequestParam String contactoDireccion,
+            @RequestParam String contactoEmail,
+            @RequestParam String contactoTelefono,
+            HttpServletRequest request) {
 
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        try {
+            int filas = jdbcTemplate.update(
+                    queryRepository.getQuery("query18"), // Inserta en usuarios_datos
+                    nombre, rut, direccion, email, telefono,
+                    contactoNombre, contactoDireccion, contactoEmail, contactoTelefono
+            );
+            return filas > 0
+                    ? ResponseEntity.ok("Datos personales guardados correctamente")
+                    : ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudieron guardar los datos");
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
     @GetMapping("/alarmas/filtradas")
     public ResponseEntity<List<Map<String, Object>>> filtrarAlarmas(
@@ -351,26 +350,27 @@ public ResponseEntity<String> crearUsuarioDatos(
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-@GetMapping("alarmas/login/verificar/admin")
+
+    @GetMapping("/alarmas/login/verificar/admin")
     public ResponseEntity<Map<String, Object>> verificarLoginAdmin(
-        @RequestParam String rut,
-        @RequestParam String clave,
-        HttpServletRequest request) {
+            @RequestParam String rut,
+            @RequestParam String clave,
+            HttpServletRequest request) {
 
-    if (accesoDenegado(request)) {
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-    }
-
-    try {
-        var resultado = jdbcTemplate.queryForList(
-                queryRepository.getQuery("query19"), rut, clave
-        );
-        if (resultado.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        return new ResponseEntity<>(resultado.get(0), HttpStatus.OK);
-    } catch (DataAccessException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+
+        try {
+            var resultado = jdbcTemplate.queryForList(
+                    queryRepository.getQuery("query19"), rut, clave
+            );
+            if (resultado.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            return new ResponseEntity<>(resultado.get(0), HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-}
 }
