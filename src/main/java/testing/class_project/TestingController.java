@@ -244,7 +244,7 @@ public class TestingController {
         }
     }
 
-    @GetMapping("/login/verificar")
+    @GetMapping("/alarmas/login/verificar")
     public ResponseEntity<Map<String, Object>> verificarLogin(
             @RequestParam String rut,
             @RequestParam String clave,
@@ -268,7 +268,7 @@ public class TestingController {
         }
     }
 
-    @GetMapping("/login/crear")
+    @GetMapping("/alarmas/login/crear")
     public ResponseEntity<String> crearUsuarioLogin(
             @RequestParam String rut,
             @RequestParam String clave,
@@ -292,7 +292,7 @@ public class TestingController {
         }
     }
 
-    @GetMapping("/usuario/datos/crear")
+    @GetMapping("/alarmas/usuario/datos/crear")
     public ResponseEntity<String> crearUsuarioDatos(
             @RequestParam String nombre,
             @RequestParam String rut,
