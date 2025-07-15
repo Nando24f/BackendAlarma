@@ -52,7 +52,7 @@ public class TestingController {
         return !accessControlService.isAllowed(ip);
     }
 
-@GetMapping("/alarmas/usuario/datos/detalles")
+    @GetMapping("/alarmas/usuario/datos/detalles")
     public ResponseEntity<List<Map<String, Object>>> obtenerDatosUsuario(
             @RequestParam String rut,
             HttpServletRequest request) {
@@ -365,5 +365,4 @@ public class TestingController {
         }
     }
 
-    
 }

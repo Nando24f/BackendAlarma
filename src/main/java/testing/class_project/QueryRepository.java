@@ -153,10 +153,6 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
     SELECT * FROM usuarios_login WHERE rut = ? AND clave = ? AND categoria = 'admin';
 """;
 
-    public static final String QUERY_20 = """
-    SELECT * FROM usuarios_datos WHERE rut = ?;
-""";
-
     // Método para recuperar la consulta deseada por ID
     public String getQuery(String queryId) {
         return switch (queryId) {
@@ -198,8 +194,6 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
                 QUERY_18;
             case "query19" ->   
                 QUERY_19;
-            case "query20" ->
-                QUERY_20;
             default ->
                 throw new IllegalArgumentException("Query no encontrada: " + queryId);
         };
