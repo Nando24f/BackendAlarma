@@ -17,7 +17,7 @@ public class IpConfig {
 
     }
 
-    public static final String JUAN_IP = " 10.0.0.25";
+    public static final String JUAN_IP = "200.13.4.251";
     public static final String JUAN = "juan";
 
     public static final String QUERY_1 = "query1";
