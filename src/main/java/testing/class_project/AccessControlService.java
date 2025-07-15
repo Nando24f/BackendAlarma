@@ -95,16 +95,20 @@ public class AccessControlService {
         return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_15);
     }
     public boolean canExecuteQuery16() {
-        return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_16);
+        //return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_16);
+        return true;
     }
     public boolean canExecuteQuery17() {
-        return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_17);
+        //return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_17);
+        return true;
     }   
     public boolean canExecuteQuery18() {
-        return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_18);
+        //return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_18);
+        return true;
     }   
     public boolean canExecuteQuery19() {
-        return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_19);
+        //canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_19);
+        return true;
     }
 
     public boolean canExecuteQuery(String allowedUser, String requiredQuery) {
