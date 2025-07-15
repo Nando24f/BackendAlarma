@@ -52,6 +52,25 @@ public class TestingController {
         return !accessControlService.isAllowed(ip);
     }
 
+@GetMapping("/alarmas/usuario/datos/detalles")
+    public ResponseEntity<List<Map<String, Object>>> obtenerDatosUsuario(
+            @RequestParam String rut,
+            HttpServletRequest request) {
+
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        try {
+            var results = jdbcTemplate.queryForList(
+                    queryRepository.getQuery("query20"), rut
+            );
+            return new ResponseEntity<>(results, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @GetMapping("/test")
     public ResponseEntity<String> testEndpoint(HttpServletRequest request) {
         if (accesoDenegado(request)) {
@@ -346,22 +365,5 @@ public class TestingController {
         }
     }
 
-    @GetMapping("/alarmas/usuario/datos/detalles")
-    public ResponseEntity<List<Map<String, Object>>> obtenerDatosUsuario(
-            @RequestParam String rut,
-            HttpServletRequest request) {
-
-        if (accesoDenegado(request)) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
-        try {
-            var results = jdbcTemplate.queryForList(
-                    queryRepository.getQuery("query20"), rut
-            );
-            return new ResponseEntity<>(results, HttpStatus.OK);
-        } catch (DataAccessException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+    
 }
