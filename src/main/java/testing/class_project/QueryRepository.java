@@ -157,6 +157,10 @@ public static final String QUERY_20 = """
     SELECT * FROM usuarios_datos WHERE rut = ?;
 """;
 
+    public static final String QUERY_21 = """
+                "SELECT * FROM alarmas ORDER BY fecha DESC, hora DESC LIMIT 1"
+    """;
+
     // Método para recuperar la consulta deseada por ID
     public String getQuery(String queryId) {
         return switch (queryId) {
@@ -199,6 +203,7 @@ public static final String QUERY_20 = """
             case "query19" ->   
                 QUERY_19;
                 case "query20" -> QUERY_20;
+            case "query21" -> QUERY_21;
             default ->
                 throw new IllegalArgumentException("Query no encontrada: " + queryId);
         };

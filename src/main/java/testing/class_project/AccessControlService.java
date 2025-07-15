@@ -109,6 +109,9 @@ public class AccessControlService {
     public boolean canExecuteQuery20() {
         return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_20);
     }
+    public boolean canExecuteQuery21() {
+        return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_21);
+    }   
 
     public boolean canExecuteQuery(String allowedUser, String requiredQuery) {
         var userData = ipConfig.getCredentialsForIp(request.getRemoteAddr());
@@ -116,5 +119,9 @@ public class AccessControlService {
         var userQueries = userData.queries();
         System.out.println("Remote IP: " + request.getRemoteAddr());
         return userName.equals(allowedUser) && userQueries.contains(requiredQuery);
+    }
+
+    boolean accesoDenegado(HttpServletRequest request) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

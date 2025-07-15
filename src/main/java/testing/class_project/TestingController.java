@@ -52,7 +52,6 @@ public class TestingController {
         return !accessControlService.isAllowed(ip);
     }
 
-
     @GetMapping("/test")
     public ResponseEntity<String> testEndpoint(HttpServletRequest request) {
         if (accesoDenegado(request)) {
@@ -346,21 +345,22 @@ public class TestingController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    // Query 21 - Obtener la última alarma registrada
 
-    @GetMapping("/alarmas/datos/por-rut")
-    public ResponseEntity<List<Map<String, Object>>> obtenerDatosUsuario(
-            @RequestParam String rut,
-            HttpServletRequest request) {
-
+    @GetMapping("/query21")
+    public ResponseEntity<Map<String, Object>> getUltimaAlarma(HttpServletRequest request) {
         if (accesoDenegado(request)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
         try {
-            var results = jdbcTemplate.queryForList(
-                    queryRepository.getQuery("query20"), rut
-            );
-            return new ResponseEntity<>(results, HttpStatus.OK);
+            var result = jdbcTemplate.queryForList(queryRepository.getQuery("query21"));
+
+            if (!result.isEmpty()) {
+                return new ResponseEntity<>(result.get(0), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
