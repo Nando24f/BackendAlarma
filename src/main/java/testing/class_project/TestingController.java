@@ -413,7 +413,7 @@ public class TestingController {
         }
 
         try {
-            var resultados = jdbcTemplate.queryForList(queryRepository.getQuery("query23"));
+            var resultados = jdbcTemplate.queryForList(queryRepository.getQuery("query22"));
             return new ResponseEntity<>(resultados, HttpStatus.OK);
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
