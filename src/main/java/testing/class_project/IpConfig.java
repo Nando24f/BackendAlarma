@@ -41,13 +41,14 @@ public class IpConfig {
     public static final String QUERY_19 = "query19";
         public static final String QUERY_20 = "query20";
         public static final String QUERY_21 = "query21";
-
+        public static final String QUERY_22 = "query22";
+        public static final String QUERY_23 = "query23";
     public static final Map<String, IpData> IP_CREDENTIAL_MAP = Map.of(
             JUAN_IP, new IpData(JUAN,
                     List.of(QUERY_1, QUERY_2, QUERY_3, QUERY_4, QUERY_5,
                             QUERY_6, QUERY_7, QUERY_8, QUERY_9, QUERY_10, QUERY_2, QUERY_11, 
                             QUERY_12, QUERY_13, QUERY_14, QUERY_15,QUERY_16, QUERY_17, 
-                            QUERY_18,QUERY_19,QUERY_20,QUERY_21),
+                            QUERY_18,QUERY_19,QUERY_20,QUERY_21,QUERY_22,QUERY_23),
                     "mypass543")
     );
 

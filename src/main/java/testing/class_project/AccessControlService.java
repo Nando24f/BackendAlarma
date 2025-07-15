@@ -111,7 +111,14 @@ public class AccessControlService {
     }
     public boolean canExecuteQuery21() {
         return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_21);
+    }
+    public boolean canExecuteQuery22() {
+        return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_21);
+    }
+    public boolean canExecuteQuery23() {
+        return canExecuteQuery(IpConfig.JUAN_IP, IpConfig.QUERY_21);
     }   
+    
 
     public boolean canExecuteQuery(String allowedUser, String requiredQuery) {
         var userData = ipConfig.getCredentialsForIp(request.getRemoteAddr());

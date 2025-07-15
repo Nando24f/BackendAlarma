@@ -18,7 +18,7 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
     LIMIT 10;
 """;
 
- public static final String QUERY_2 = """
+    public static final String QUERY_2 = """
     SELECT 
         a.id,
         a.descripcion_evento AS descripcion,
@@ -33,7 +33,6 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
     LEFT JOIN usuarios u ON a.usuario_id = u.id
     WHERE a.latitud IS NOT NULL AND a.longitud IS NOT NULL
 """;
-
 
 // Ver todas las alarmas de un usuario específico
     public static final String QUERY_3 = """
@@ -129,7 +128,7 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
       AND (? IS NULL OR fecha <= ?)
       AND (? IS NULL OR usuario_id = ?);
 """;
-    
+
     public static final String QUERY_16 = """
     SELECT *
     FROM usuarios_login
@@ -153,7 +152,7 @@ public class QueryRepository {// Mostrar las últimas 10 alarmas activas (pendie
     SELECT * FROM usuarios_login WHERE rut = ? AND clave = ? AND categoria = 'admin';
 """;
 
-public static final String QUERY_20 = """
+    public static final String QUERY_20 = """
     SELECT * FROM usuarios_datos WHERE rut = ?;
 """;
 
@@ -161,6 +160,24 @@ public static final String QUERY_20 = """
                 "SELECT * FROM alarmas ORDER BY fecha DESC, hora DESC LIMIT 1"
     """;
 
+    public static final String QUERY_22 = """
+        SELECT * 
+    FROM alarmas
+    WHERE CONCAT(fecha, ' ', hora) >= NOW() - INTERVAL 5 MINUTE;
+""";
+    public static final String QUERY_23  = """
+    INSERT INTO alarmas (
+    usuario_id,
+    nombre_usuario,
+    direccion_usuario,
+    fecha,
+    hora,
+    categoria,
+    latitud,
+    longitud
+) VALUES (?, ?, ?, CURDATE(), CURTIME(), ?, ?, ?, ?, ?, ?);
+
+    """;
     // Método para recuperar la consulta deseada por ID
     public String getQuery(String queryId) {
         return switch (queryId) {
@@ -196,14 +213,20 @@ public static final String QUERY_20 = """
                 QUERY_15;
             case "query16" ->
                 QUERY_16;
-            case "query17" ->      
+            case "query17" ->
                 QUERY_17;
             case "query18" ->
                 QUERY_18;
-            case "query19" ->   
+            case "query19" ->
                 QUERY_19;
-                case "query20" -> QUERY_20;
-            case "query21" -> QUERY_21;
+            case "query20" ->
+                QUERY_20;
+            case "query21" ->
+                QUERY_21;
+            case "query22" ->
+                QUERY_22;
+            case "query23" ->
+                QUERY_23;
             default ->
                 throw new IllegalArgumentException("Query no encontrada: " + queryId);
         };

@@ -366,4 +366,58 @@ public class TestingController {
         }
     }
 
+    @GetMapping("/alarmas/crear")
+    public ResponseEntity<String> crearAlarma(
+            @RequestParam int usuarioId,
+            @RequestParam String nombreUsuario,
+            @RequestParam String direccionUsuario,
+            @RequestParam String categoria,
+            @RequestParam String descripcionEvento,
+            @RequestParam String prioridad,
+            @RequestParam String estado,
+            @RequestParam double latitud,
+            @RequestParam double longitud,
+            HttpServletRequest request) {
+
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        try {
+            int filas = jdbcTemplate.update(
+                    queryRepository.getQuery("query23"),
+                    usuarioId,
+                    nombreUsuario,
+                    direccionUsuario,
+                    categoria,
+                    descripcionEvento,
+                    prioridad,
+                    estado,
+                    latitud,
+                    longitud
+            );
+
+            return filas > 0
+                    ? ResponseEntity.ok("Alarma insertada correctamente")
+                    : ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo insertar la alarma");
+
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/alarmas/recientes")
+    public ResponseEntity<List<Map<String, Object>>> obtenerAlarmasRecientes(HttpServletRequest request) {
+        if (accesoDenegado(request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        try {
+            var resultados = jdbcTemplate.queryForList(queryRepository.getQuery("query23"));
+            return new ResponseEntity<>(resultados, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }
