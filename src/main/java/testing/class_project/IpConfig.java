@@ -39,7 +39,7 @@ public class IpConfig {
     public static final String QUERY_17 = "query17";
     public static final String QUERY_18 = "query18";
     public static final String QUERY_19 = "query19";
-        public static final String QUERY_20 = "query20";
+    public static final String QUERY_20 = "query20";
 
     public static final Map<String, IpData> IP_CREDENTIAL_MAP = Map.of(
             JUAN_IP, new IpData(JUAN,
